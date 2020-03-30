@@ -1,21 +1,29 @@
 <template>
   <view class="container">
     <view class="statusbar" />
-    <camera class="container" :type="this.type" ref="camera" />
+    <camera class="container" :type="cameraType" ratio="4:3" ref="camera" />
     <view class="meme">
       <touchable-opacity class="suaguiti" :on-press="accessCameraRoll">
         <Ionicons class="iconos" name="ios-photos" />
       </touchable-opacity>
 
-      <touchable-opacity class="suaguiti" :on-press="snapPhoto" v-if="!estaGrabando">
+      <touchable-opacity
+        class="suaguiti"
+        :on-press="snapPhoto"
+        v-if="!isRecording"
+      >
         <FontAwesome class="iconos" name="camera" />
       </touchable-opacity>
 
-      <touchable-opacity class="suaguiti" :on-press="pararVideo" v-if="estaGrabando">
+      <touchable-opacity
+        class="suaguiti"
+        :on-press="stopVideo"
+        v-if="isRecording"
+      >
         <FontAwesome class="iconos" name="stop" />
       </touchable-opacity>
 
-      <touchable-opacity class="suaguiti" :on-press="grabarVideo" v-else>
+      <touchable-opacity class="suaguiti" :on-press="recordVideo" v-else>
         <Ionicons class="iconos" name="ios-videocam" />
       </touchable-opacity>
 
@@ -30,6 +38,7 @@
 import * as Permissions from "expo-permissions";
 import { Camera } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
+import * as MediaLibrary from "expo-media-library";
 import {
   FontAwesome,
   Ionicons,
@@ -38,13 +47,13 @@ import {
 export default {
   data() {
     return {
-      estaGrabando: false,
+      isRecording: false,
       hasPermission: false,
-      type: Camera.Constants.Type.back
+      cameraType: "back"
     };
   },
-  mounted() {
-    Permissions.askAsync(
+  async mounted() {
+    await Permissions.askAsync(
       Permissions.CAMERA,
       Permissions.AUDIO_RECORDING,
       Permissions.CAMERA_ROLL
@@ -58,30 +67,34 @@ export default {
   },
   methods: {
     handleCameraType() {
-      // const { cameraType } = this.type;
-      alert(type);
-      this.type === Camera.Constants.Type.back
-        ? Camera.Constants.Type.front
-        : Camera.Constants.Type.back;
-      alert(type);
+      this.cameraType === "back"
+        ? (this.cameraType = "front")
+        : (this.cameraType = "back");
     },
-    snapPhoto() {
-      let photo = this.$refs.camera.takePictureAsync();
+    async snapPhoto() {
+      let photo = await this.$refs.camera.takePictureAsync();
+      MediaLibrary.saveToLibraryAsync(photo.uri);
       console.log(photo);
+      // const { uri } = await this.$refs.camera.takePictureAsync();
+      // console.log(uri);
+      // const asset = await MediaLibrary.createAssetAsync(uri);
+      // console.log(asset);
+      // MediaLibrary.createAlbumAsync("GoriXD", asset);
     },
-    accessCameraRoll() {
-      let result = ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images
+    async accessCameraRoll() {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All
       });
     },
-    grabarVideo() {
-      let video = this.$refs.camera.recordAsync();
-      this.estaGrabando = true;
+    async recordVideo() {
+      this.isRecording = true;
+      let video = await this.$refs.camera.recordAsync();
+      MediaLibrary.saveToLibraryAsync(video.uri);
       console.log(video);
     },
-    pararVideo() {
+    stopVideo() {
       this.$refs.camera.stopRecording();
-      this.estaGrabando = false;
+      this.isRecording = false;
     }
   },
   components: { Camera, FontAwesome, Ionicons, MaterialCommunityIcons }
@@ -91,7 +104,7 @@ export default {
 <style>
 .statusbar {
   background-color: black;
-  height: 100;
+  height: 110;
 }
 .container {
   flex: 1;
@@ -100,7 +113,9 @@ export default {
 .meme {
   flex-direction: row;
   justify-content: space-between;
-  margin: 60px 20px;
+  margin: 70;
+  margin-right: 30;
+  margin-left: 30;
 }
 .suaguiti {
   align-self: flex-end;
