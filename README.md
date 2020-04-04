@@ -3,5 +3,5 @@ En el presente repositorio se encuentra el código fuente de las tareas entregad
 
 Igualmente, se adjuntan las documentaciones de información relevante al proyecto:  
 https://vue-native.io/docs/  
-https://docs.expo.io/versions/v37.0.0/  
+https://docs.expo.io/  
 https://docs.nativebase.io/  
