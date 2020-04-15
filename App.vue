@@ -3,36 +3,56 @@
 </template>
 
 <script>
-import { createAppContainer, createStackNavigator } from "vue-native-router";
+import {
+  createAppContainer,
+  createMaterialTopTabNavigator,
+  createStackNavigator
+} from "vue-native-router";
 
 import HomeScreen from "./screens/Home.vue";
-import CamaraScreen from "./screens/Camara.vue";
+import CameraScreen from "./screens/Camera.vue";
+import WebServiceScreen from "./screens/WebService.vue";
+import GeolocationScreen from "./screens/Geolocation.vue";
+
+const Tabs = createMaterialTopTabNavigator({
+  Camera: HomeScreen,
+  Webservices: WebServiceScreen,
+  Geolocation: GeolocationScreen
+});
 
 const StackNavigator = createStackNavigator(
   {
-    Home: HomeScreen,
-    Camara: CamaraScreen,
+    Tabs,
+    Camara: CameraScreen
   },
   {
-    initialRouteName: "Home",
-    // headerTitle: "ME PICA",
-    headerMode: "none",
+    // initialRouteName: "Home",
+    // headerMode: "none"
     // options: {
     //   title: "Prueba",
     // },
     // headerStyle: {
     //   heigh: 20,
     // },
-    // defaultNavigationOptions: {
-    //   headerShown: false,
-    //   gestureEnabled: false,
-    // },
+    defaultNavigationOptions: {
+      // headerShown: false,
+      gestureEnabled: false,
+      title: "IISO-4210 - Jose Sandoval",
+      headerTitleStyle: {
+        textAlign: "center",
+        alignSelf: "center",
+        color: "white"
+      },
+      headerStyle: {
+        backgroundColor: "#0288D1"
+      }
+    }
   }
 );
 
 const AppNavigator = createAppContainer(StackNavigator);
 
 export default {
-  components: { AppNavigator },
+  components: { AppNavigator }
 };
 </script>

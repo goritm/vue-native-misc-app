@@ -9,12 +9,7 @@
 
     <view class="efe">
       <button title="Tomar Video" @press="tomarVideo"></button>
-      <video
-        class="test"
-        :source="{ uri: videomeme }"
-        useNativeControls
-        resizeMode="contain"
-      />
+      <video class="test" :source="{ uri: videomeme }" useNativeControls resizeMode="contain" />
     </view>
   </view>
 </template>
@@ -27,25 +22,25 @@ export default {
       fotomeme:
         "https://miro.medium.com/max/1800/1*jHgVL8ln-1-P8CGcvUck0g.jpeg",
       videomeme:
-        "https://cdn.discordapp.com/attachments/691871512247926815/695174141174874132/spiderman_3.mp4",
+        "https://cdn.discordapp.com/attachments/691871512247926815/695174141174874132/spiderman_3.mp4"
     };
   },
   props: {
     navigation: {
-      type: Object,
-    },
+      type: Object
+    }
   },
   methods: {
     tomarFoto() {
       this.navigation.navigate("Camara", {
         onGoBack: this.refresh,
-        tipo: "Foto",
+        tipo: "Foto"
       });
     },
     tomarVideo() {
       this.navigation.navigate("Camara", {
         onGoBack: this.refresh,
-        tipo: "Video",
+        tipo: "Video"
       });
     },
     refresh(data, tipo) {
@@ -54,9 +49,9 @@ export default {
       } else {
         this.videomeme = data;
       }
-    },
+    }
   },
-  components: { Video },
+  components: { Video }
 };
 </script>
 
@@ -68,10 +63,11 @@ export default {
 }
 .statusbar {
   background-color: white;
-  height: 110;
+  /* height: 110; */
+  height: 20;
 }
 .efe {
-  padding: 20;
+  padding: 10;
 }
 .test {
   width: 300;

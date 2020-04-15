@@ -66,7 +66,7 @@ export default {
       Permissions.CAMERA_ROLL
     )
       .then((status) => {
-        hasPermission = status.status == "granted" ? true : false;
+        this.hasPermission = status.status == "granted" ? true : false;
       })
       .catch((err) => {
         console.log(err);
@@ -85,7 +85,7 @@ export default {
     },
     async snapPhoto() {
       let photo = await this.$refs.camera.takePictureAsync();
-      MediaLibrary.saveToLibraryAsync(photo.uri);
+      // MediaLibrary.saveToLibraryAsync(photo.uri);
       console.log(photo);
       this.navigation.state.params.onGoBack(photo.uri, "Foto");
       this.navigation.goBack();
@@ -98,7 +98,7 @@ export default {
     async recordVideo() {
       this.isRecording = true;
       let video = await this.$refs.camera.recordAsync();
-      MediaLibrary.saveToLibraryAsync(video.uri);
+      // MediaLibrary.saveToLibraryAsync(video.uri);
       console.log(video);
       this.navigation.state.params.onGoBack(video.uri, "Video");
       this.navigation.goBack();
@@ -115,7 +115,7 @@ export default {
 <style>
 .statusbar {
   background-color: black;
-  height: 110;
+  height: 50;
 }
 .container {
   flex: 1;
