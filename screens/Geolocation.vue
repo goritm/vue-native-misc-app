@@ -1,34 +1,36 @@
 <template>
   <view class="container">
-    <text>Location:</text>
-    <text>{{ location }}</text>
+    <text>Latitud: {{ coordinates.latitude }}</text>
+    <text>Longitud: {{ coordinates.longitude }}</text>
     <touchable-opacity>
       <button title="Obtener Localización" @press="getLocation"></button>
     </touchable-opacity>
-    <!-- <mapview class="mapa" /> -->
+    <MapView
+      class="mapa"
+      :region="coordinates"
+      :onRegionChangeComplete="onRegionChange"
+      ref="mapa"
+    />
   </view>
 </template>
 
 <script>
 import * as Permissions from "expo-permissions";
 import * as Location from "expo-location";
-// import MapView from "react-native-maps";
-// import { Constants } from "expo";
+import MapView from "react-native-maps";
 
-// https://vue-native.io/docs/community-libraries-doc.html
-// https://vue-native.io/docs/device-apis.html
-// https://github.com/react-native-mapbox-gl/maps/blob/master/docs/GettingStarted.md
+// https://github.com/react-native-community/react-native-maps
+// https://github.com/react-native-community/react-native-maps/blob/master/docs/mapview.md
 
 export default {
   data() {
     return {
-      location: {},
       errorMessage: "",
       coordinates: {
-        latitude: 12.91074,
-        longitude: 77.5996363,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
+        latitude: 41.881832,
+        longitude: -87.623177,
+        latitudeDelta: 0.1,
+        longitudeDelta: 0.05,
       },
     };
   },
@@ -40,18 +42,31 @@ export default {
             this.errorMessage = "Permission to access location was denied";
           }
 
-          Location.getCurrentPositionAsync({}).then((location1) => {
-            this.location = location1;
-            console.log(this.location.coords);
-            // alert(this.location.coords.accuracy);
+          Location.getCurrentPositionAsync({}).then((location) => {
+            // this.coordinates.latitude = location.coords.latitude;
+            // this.coordinates.longitude = location.coords.longitude;
+            console.log(this.coordinates);
+            this.$refs.mapa.animateToRegion(
+              {
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+                latitudeDelta: 0.001,
+                longitudeDelta: 0.05,
+              },
+              50
+            );
+            // console.log(this.location.coords.latitude);
           });
         })
         .catch((err) => {
           console.log(err);
         });
     },
+    onRegionChange(region) {
+      this.coordinates = region;
+    },
   },
-  //   components: { MapView },
+  components: { MapView },
 };
 </script>
 
@@ -63,7 +78,8 @@ export default {
   justify-content: center;
 }
 .mapa {
-  flex: 1;
+  height: 500px;
+  width: 400px;
 }
 .text-color-primary {
   color: blue;

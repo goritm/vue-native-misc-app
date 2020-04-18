@@ -1,30 +1,66 @@
 <template>
   <view class="container">
-    <text class="text-color-primary">{{message}}</text>
+    <button :on-press="generarFotos" title="Generar fotos " />
+    <!-- <view v-for="(foto, index) in info" :key="index">
+      <image class="foticos" :source="{ uri: foto.urls.small }" />
+    </view>-->
+    <view v-if="info">
+      <view v-for="(foto, index) in info" :key="index">
+        <image class="foticos" :source="{ uri: foto.urls.small }" />
+      </view>
+    </view>
+    <view v-else>
+      <text class="text-color-primary">{{ message }}</text>
+    </view>
   </view>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  data: function() {
+  data() {
     return {
-      message: "Aquí irá la vaina del web service lol"
+      message: "Dale al botón XD!",
+      info: null,
+      client_id: "0p8wscsQuJqN3zUY6sERifnnK-oYMUf5TLlupMAzb2Y"
     };
+  },
+  methods: {
+    generarFotos() {
+      axios
+        .get(
+          "https://api.unsplash.com/photos/random/?count=2&client_id=" +
+            this.client_id
+        )
+        .then(response => {
+          this.info = response.data;
+          console.log(this.info);
+        })
+        .catch(error => {
+          console.log(error);
+          this.message = "Límite de imágenes XD!";
+        });
+    }
   }
 };
 </script>
 
 <style>
 .container {
-  /* display: flex; */
   flex: 1;
   background-color: white;
-  /* align-items: center; */
+  align-items: center;
   justify-content: center;
 }
 .text-color-primary {
-  color: purple;
-  font-size: 30;
+  color: lightseagreen;
+  font-size: 20;
   text-align: center;
+}
+.foticos {
+  width: 300;
+  height: 300;
+  margin: 10;
 }
 </style>
