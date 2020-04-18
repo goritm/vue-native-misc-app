@@ -44,11 +44,7 @@ export default {
       });
     },
     refresh(data, tipo) {
-      if (tipo == "Foto") {
-        this.fotomeme = data;
-      } else {
-        this.videomeme = data;
-      }
+      tipo == "Foto" ? (this.fotomeme = data) : (this.videomeme = data);
     }
   },
   components: { Video }

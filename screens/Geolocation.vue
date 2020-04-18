@@ -30,19 +30,19 @@ export default {
         latitude: 41.881832,
         longitude: -87.623177,
         latitudeDelta: 0.1,
-        longitudeDelta: 0.05,
-      },
+        longitudeDelta: 0.05
+      }
     };
   },
   methods: {
     getLocation() {
       Permissions.askAsync(Permissions.LOCATION)
-        .then((status) => {
+        .then(status => {
           if (status !== "granted") {
             this.errorMessage = "Permission to access location was denied";
           }
 
-          Location.getCurrentPositionAsync({}).then((location) => {
+          Location.getCurrentPositionAsync({}).then(location => {
             // this.coordinates.latitude = location.coords.latitude;
             // this.coordinates.longitude = location.coords.longitude;
             console.log(this.coordinates);
@@ -51,22 +51,22 @@ export default {
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
                 latitudeDelta: 0.001,
-                longitudeDelta: 0.05,
+                longitudeDelta: 0.05
               },
-              50
+              10
             );
             // console.log(this.location.coords.latitude);
           });
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
     },
     onRegionChange(region) {
       this.coordinates = region;
-    },
+    }
   },
-  components: { MapView },
+  components: { MapView }
 };
 </script>
 

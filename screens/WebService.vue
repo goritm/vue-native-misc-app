@@ -1,12 +1,11 @@
 <template>
   <view class="container">
-    <button :on-press="generarFotos" title="Generar fotos " />
-    <!-- <view v-for="(foto, index) in info" :key="index">
-      <image class="foticos" :source="{ uri: foto.urls.small }" />
-    </view>-->
+    <button :on-press="generarFotos" title="Generar fotos XD" />
     <view v-if="info">
       <view v-for="(foto, index) in info" :key="index">
         <image class="foticos" :source="{ uri: foto.urls.small }" />
+        <text class="text-fotos">Tomada por: {{ foto.user.name }}</text>
+        <!-- <text class="text-fotos">Nombre: {{ foto.location.name }}</text> -->
       </view>
     </view>
     <view v-else>
@@ -56,6 +55,11 @@ export default {
 .text-color-primary {
   color: lightseagreen;
   font-size: 20;
+  text-align: center;
+}
+.text-fotos {
+  color: lightseagreen;
+  font-size: 14;
   text-align: center;
 }
 .foticos {
