@@ -13,11 +13,13 @@ import HomeScreen from "./screens/Home.vue";
 import CameraScreen from "./screens/Camera.vue";
 import WebServiceScreen from "./screens/WebService.vue";
 import GeolocationScreen from "./screens/Geolocation.vue";
+import DatabaseScreen from "./screens/Database.vue";
 
 const Tabs = createMaterialTopTabNavigator({
   Camera: HomeScreen,
-  Webservices: WebServiceScreen,
-  Geolocation: GeolocationScreen
+  API: WebServiceScreen,
+  Map: GeolocationScreen,
+  DB: DatabaseScreen
 });
 
 const StackNavigator = createStackNavigator(

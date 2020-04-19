@@ -31,7 +31,8 @@
     "unsplash-js": "^6.0.0",
     "vue-native-core": "^0.1.4",
     "vue-native-helper": "^0.1.4",
-    "vue-native-router": "^0.1.1"
+    "vue-native-router": "^0.1.1",
+    "expo-sqlite": "~8.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

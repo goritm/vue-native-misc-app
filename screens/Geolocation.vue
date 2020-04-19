@@ -5,19 +5,23 @@
     <touchable-opacity>
       <button title="Obtener Localización" @press="getLocation"></button>
     </touchable-opacity>
-    <MapView
-      class="mapa"
-      :region="coordinates"
-      :onRegionChangeComplete="onRegionChange"
-      ref="mapa"
-    />
+    <MapView class="mapa" :initial-region="coordinates" :onRegionChange="onRegionChange" ref="mapa">
+      <Marker
+        title="Tu localización"
+        :coordinate="{
+          latitude: coordinates.latitude,
+          longitude: coordinates.longitude
+          }"
+        draggable
+      />
+    </MapView>
   </view>
 </template>
 
 <script>
 import * as Permissions from "expo-permissions";
 import * as Location from "expo-location";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 
 // https://github.com/react-native-community/react-native-maps
 // https://github.com/react-native-community/react-native-maps/blob/master/docs/mapview.md
@@ -66,7 +70,7 @@ export default {
       this.coordinates = region;
     }
   },
-  components: { MapView }
+  components: { MapView, Marker }
 };
 </script>
 
