@@ -28,16 +28,7 @@ const StackNavigator = createStackNavigator(
     Camara: CameraScreen
   },
   {
-    // initialRouteName: "Home",
-    // headerMode: "none"
-    // options: {
-    //   title: "Prueba",
-    // },
-    // headerStyle: {
-    //   heigh: 20,
-    // },
     defaultNavigationOptions: {
-      // headerShown: false,
       gestureEnabled: false,
       title: "IISO-4210 - Jose Sandoval",
       headerTitleStyle: {

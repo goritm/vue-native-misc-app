@@ -62,7 +62,7 @@ export default {
         )
         .then(response => {
           this.users = response.data;
-          console.log(this.users);
+          // console.log(this.users);
         })
         .catch(error => {
           console.log(error);
@@ -81,7 +81,7 @@ export default {
         )
         .then(response => {
           this.photos = response.data;
-          console.log(this.photos);
+          // console.log(this.photos);
         })
         .catch(error => {
           console.log(error);
