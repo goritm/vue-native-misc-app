@@ -1,9 +1,13 @@
 <template>
   <view class="container">
+    <text>Esta es tu dirección: {{ locationText }}</text>
     <text>Latitud: {{ coordinates.latitude }}</text>
     <text>Longitud: {{ coordinates.longitude }}</text>
     <touchable-opacity>
       <button title="Obtener Localización" @press="getLocation"></button>
+    </touchable-opacity>
+    <touchable-opacity>
+      <button title="Obtener Calle" @press="generateStreet"></button>
     </touchable-opacity>
     <MapView class="mapa" :initial-region="coordinates" :onRegionChange="onRegionChange" ref="mapa">
       <Marker
@@ -23,6 +27,8 @@ import * as Permissions from "expo-permissions";
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
 
+import axios from "axios";
+
 // https://github.com/react-native-community/react-native-maps
 // https://github.com/react-native-community/react-native-maps/blob/master/docs/mapview.md
 
@@ -35,9 +41,12 @@ export default {
         longitude: -87.623177,
         latitudeDelta: 0.1,
         longitudeDelta: 0.05
-      }
+      },
+      apiKey: "802371203359246534665x6018",
+      locationText: ""
     };
   },
+  mounted() {},
   methods: {
     getLocation() {
       Permissions.askAsync(Permissions.LOCATION)
@@ -68,6 +77,24 @@ export default {
     },
     onRegionChange(region) {
       this.coordinates = region;
+    },
+    generateStreet() {
+      axios
+        .get(
+          "https://geocode.xyz/" +
+            this.coordinates.latitude +
+            "," +
+            this.coordinates.longitude +
+            "?json=1&auth=" +
+            this.apiKey
+        )
+        .then(response => {
+          this.locationText = response.data.staddress;
+          // console.log(response.data.staddress);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   components: { MapView, Marker }
