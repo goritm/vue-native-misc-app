@@ -2,16 +2,16 @@
   <view>
     <view class="container">
       <text-input class="text-input" v-model="text" />
-      <touchable-opacity class="button" :on-press="addDog">
+      <touchable-opacity class="button" :on-press="add">
         <text class="button-text">Agregar</text>
       </touchable-opacity>
       <touchable-opacity class="button" :on-press="clearList">
         <text class="button-text">Reset</text>
       </touchable-opacity>
     </view>
-    <view class="test" v-for="(dogo, index) in dogos" :key="index">
-      <touchable-opacity :on-press="() => removeDog(dogo)">
-        <text class="text-container">{{ dogo }}</text>
+    <view class="test" v-for="(vaina, index) in listaVainas" :key="index">
+      <touchable-opacity :on-press="() => remove(vaina)">
+        <text class="text-container">{{ vaina }}</text>
       </touchable-opacity>
     </view>
   </view>
@@ -24,38 +24,43 @@ export default {
   data() {
     return {
       text: "",
-      dogos: [],
+      listaVainas: []
     };
   },
   mounted() {
-    this.getDog();
+    this.get();
   },
   methods: {
-    async addDog() {
+    async add() {
       try {
-        await AsyncStorage.setItem(this.text, this.text);
-        alert(this.text + " agregado!");
-        this.dogos.push(this.text);
-        this.text = "";
+        if (this.listaVainas.includes(this.text)) {
+          alert("No puede ingresar lo mismo de nuevo");
+        } else {
+          await AsyncStorage.setItem(this.text, this.text);
+          alert(this.text + " agregado!");
+          this.listaVainas.push(this.text);
+          console.log(this.listaVainas);
+          this.text = "";
+        }
       } catch (error) {
         console.log(error.message);
       }
     },
-    async getDog() {
+    async get() {
       try {
         const keys = await AsyncStorage.getAllKeys();
         // const items = await AsyncStorage.multiGet(keys);
-        this.dogos = keys;
-        console.log(this.dogos);
+        this.listaVainas = keys;
+        // console.log(this.listaVainas);
       } catch (error) {
         console.log(error.message);
       }
     },
-    async removeDog(dogo) {
+    async remove(vaina) {
       try {
-        await AsyncStorage.removeItem(dogo);
-        this.dogos = [];
-        this.getDog();
+        await AsyncStorage.removeItem(vaina);
+        this.listaVainas = [];
+        this.get();
       } catch (error) {
         console.log(error.message);
       }
@@ -63,13 +68,13 @@ export default {
     async clearList() {
       try {
         await AsyncStorage.clear();
-        this.dogos = [];
+        this.listaVainas = [];
         alert("Datos borrados");
       } catch (error) {
         console.log(error.message);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
